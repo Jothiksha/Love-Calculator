@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Calculator</title>
+    <style>
+        /* General Reset */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Background Animation */
+        body {
+            background-image: url("./assets/photos/bg.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: 'Times New Roman', Times, serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            animation: backgroundAnimate 15s infinite alternate ease-in-out;
+        }
+        @keyframes backgroundAnimate {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Container Card Animation */
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            max-width: 350px;
+            transition: transform 0.3s ease, width 0.5s ease, opacity 0.5s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+        .container.wide {
+            max-width: 600px; /* Increase width after clicking calculate */
+        }
+        .container.narrow {
+            max-width: 400px; /* Reduced width after calculation */
+            padding: 20px;
+        }
+
+        /* Header and Input Styles */
+        h1 {
+            color: #d8435e;
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            border: 2px solid #d8435e;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(216, 67, 94, 0.2);
+        }
+        input[type="text"]:focus {
+            border-color: #bf3e59;
+            outline: none;
+            box-shadow: 0 4px 12px rgba(216, 67, 94, 0.4);
+        }
+        /*container*/
+        .container:hover {
+            transform: scale(1.05);  /* Slightly enlarge the container */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);  /* Add a larger shadow for a hover effect */
+        }
+
+        /* Button Styles */
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #d8435e, #f37272);
+            color: #fff;
+            font-size: 20px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(216, 67, 94, 0.3);
+        }
+        button:hover {
+            background: linear-gradient(135deg, #f37272, #d8435e);
+            transform: scale(1.05) rotate(-1deg);
+            box-shadow: 0 10px 20px rgba(216, 67, 94, 0.4);
+        }
+
+        /* Result and Quote Styles */
+        .result, .quote {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #bf3e59;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .result, .quote:hover{
+            transform: scale(1.05);
+        }
+        #videoPlayer {
+            margin-top: 20px;
+            display: none;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Video Hover Animation */
+        #videoPlayer:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <h1 id="header">Love Calculator</h1>
+        <input type="text" id="name1" placeholder="Your Name">
+        <input type="text" id="name2" placeholder="Partner's Name">
+        <button onclick="calculateLove()">Calculate</button>
+        <div class="result" id="result"></div>
+        <div class="quote" id="quote"></div>
+        <video id="videoPlayer" controls>
+            <source id="videoSource" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        function calculateLove() {
+            const name1 = document.getElementById("name1").value.trim();
+            const name2 = document.getElementById("name2").value.trim();
+
+            if (name1 === "" || name2 === "") {
+                document.getElementById("result").textContent = "Please enter both names!";
+                return;
+            }
+
+            const loveScore = Math.floor(Math.random() * 100) + 1;
+            document.getElementById("result").innerHTML = `${name1} ❤️ ${name2} has a love score of ${loveScore}%`;
+
+            const quotes = [
+                "Love is not finding someone to live with, it’s finding someone you can’t live without.",
+                "You are the last thought in my mind before I drift off to sleep and the first thought when I wake up.",
+                "A successful relationship requires falling in love multiple times, but always with the same person.",
+                "In a sea of people, my eyes will always search for you.",
+                "Love is composed of a single soul inhabiting two bodies."
+            ];
+            const selectedQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById("quote").textContent = selectedQuote;
+
+            // Trigger the transition for text and video
+            document.getElementById("result").style.opacity = 1;
+            document.getElementById("quote").style.opacity = 1;
+
+            // Make the container wider
+            document.getElementById("container").classList.add("wide");
+
+            const videoPlayer = document.getElementById("videoPlayer");
+            const videoSource = document.getElementById("videoSource");
+
+            if (loveScore >= 80) {
+                videoSource.src = "./assets/videos/high-love-score.mp4";
+            } else if (loveScore >= 50) {
+                videoSource.src = "./assets/videos/medium-love-score.mp4";
+            } else {
+                videoSource.src = "./assets/videos/low-love-score.mp4";
+            }
+
+            videoPlayer.load();
+            videoPlayer.style.display = "block";
+            // Trigger transition for video
+            setTimeout(() => {
+                videoPlayer.style.opacity = 1;
+            }, 500);  // Delay to sync with the text fade-in
+            document.getElementById("container").classList.add("narrow");
+
+        }
+    </script>
+</body>
+</html>
